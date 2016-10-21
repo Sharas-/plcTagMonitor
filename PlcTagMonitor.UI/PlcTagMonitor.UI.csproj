@@ -68,6 +68,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="TagViewController.cs" />
+    <Compile Include="VmMonitoredTag.cs" />
     <Compile Include="VmTagView.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -108,12 +109,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\PlcTagMonitor.Repository\PlcTagMonitor.Repository.csproj">
-      <Project>{0b310a34-f975-4014-9ffa-ceb39bea62e2}</Project>
-      <Name>PlcTagMonitor.Repository</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

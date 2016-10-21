@@ -12,8 +12,28 @@ namespace PlcTagMonitor.UI
         private string _plcIP;
         private List<TagTemplate> _tags;
         private string _notification;
+        private BindingList<VmMonitoredTag> _monitoredTags;
+        private bool _connected;
 
         public ICommand CmdLoadTags { get; internal set; }
+        public ICommand CmdStartMonitoring { get; internal set; }
+        public ICommand CmdStopMonitoring { get; internal set; }
+
+        public BindingList<VmMonitoredTag> MonitoredTags
+        {
+            get
+            {
+                return _monitoredTags;
+            }
+            set
+            {
+                if (value != this._monitoredTags)
+                {
+                    this._monitoredTags = value;
+                    NotifyPropertyChanged();
+                }
+            }
+        }
 
         public string PlcIP
         {
@@ -47,6 +67,21 @@ namespace PlcTagMonitor.UI
             }
         }
 
+        public bool Connected
+        {
+            get
+            {
+                return _connected;
+            }
+            set
+            {
+                if (value != this._connected)
+                {
+                    this._connected = value;
+                    NotifyPropertyChanged();
+                }
+            }
+        } 
         public string Notification
         {
             get
