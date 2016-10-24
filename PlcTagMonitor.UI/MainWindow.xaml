@@ -32,7 +32,7 @@
                 <DataTemplate>
                     <sch:SparrowChart Height="200" Width="800">
                         <sch:SparrowChart.XAxis>
-                            <sch:LinearXAxis/>
+                            <sch:LinearXAxis MinValue="{Binding XOffset}"/>
                         </sch:SparrowChart.XAxis>
                         <sch:SparrowChart.YAxis>
                             <sch:LinearYAxis/>

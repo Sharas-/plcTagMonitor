@@ -15,7 +15,9 @@ namespace PlcTagMonitor.UI
     {
         private ObservableCollection<Point> _values;
         private string _name;
-        private uint X;
+        private ulong X;
+        private ulong _xoffset;
+
         //private DateTime _tstamp;
         internal Tag TheTag { get; }
 
@@ -26,21 +28,21 @@ namespace PlcTagMonitor.UI
             _values = new ObservableCollection<Point>();
         }
 
-        //public DateTime TimeStamp
-        //{
-        //    get
-        //    {
-        //        return _tstamp;
-        //    }
-        //    set
-        //    {
-        //        if (value != this._tstamp)
-        //        {
-        //            this._tstamp = value;
-        //            NotifyPropertyChanged();
-        //        }
-        //    }
-        //}
+        public ulong XOffset
+        {
+            get
+            {
+                return _xoffset;
+            }
+            set
+            {
+                if (value != this._xoffset)
+                {
+                    this._xoffset = value;
+                    NotifyPropertyChanged();
+                }
+            }
+        }
 
         public ObservableCollection<Point> Values
         {
@@ -60,13 +62,13 @@ namespace PlcTagMonitor.UI
 
         public void AddValue(double value)
         {
-            uint MaxX = 50;
-            this.X %= MaxX;
+            int MaxX = 50;
             if (Values.Count >= MaxX)
             {
-                Values.Clear();
+                XOffset = this.X - (ulong)MaxX;
+                Values.RemoveAt(0);
             }
-            Values.Add(new Point(this.X += 1, value));
+            Values.Add(new Point(this.X++, value));
         }
 
         public string Name
