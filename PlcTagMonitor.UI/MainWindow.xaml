@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PlcTagMonitor"
         mc:Ignorable="d"
-        Title="PLC Tag Monitor" Height="724.689" Width="1109.241">
+        Title="PLC Tag Monitor" Height="724.689" Width="1112.841">
     <Grid>
         <TextBox x:Name="txtIP" HorizontalAlignment="Left" Height="24" Margin="12,31,0,0" TextWrapping="Wrap" Text="{Binding PlcIP}" VerticalAlignment="Top" Width="180"/>
         <Button x:Name="button" Content="scan" Command="{Binding CmdLoadTags}" HorizontalAlignment="Left" Margin="203,29,0,0" VerticalAlignment="Top" Width="141" Height="26" />
@@ -24,8 +24,18 @@
                 </GridView>
             </ListView.View>
         </ListView>
-        <DataGrid x:Name="dataGrid" HorizontalAlignment="Left" AutoGenerateColumns="True" ItemsSource="{Binding MonitoredTags}" Margin="349,60,0,0" VerticalAlignment="Top" Height="611" Width="744"/>
         <Button x:Name="button1" Content="Start" HorizontalAlignment="Left" Margin="938,32,0,0" Command="{Binding CmdStartMonitoring}" IsEnabled="{Binding Connected}" VerticalAlignment="Top" Width="75"/>
         <Button x:Name="button2" Content="Stop" HorizontalAlignment="Left" Margin="1018,31,0,0" Command="{Binding CmdStopMonitoring}" IsEnabled="{Binding Connected}" VerticalAlignment="Top" Width="75"/>
+        <ListBox x:Name="listBox" HorizontalAlignment="Left" Height="611" Margin="370,60,0,0" VerticalAlignment="Top" Width="723" ItemsSource="{Binding MonitoredTags}">
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <DockPanel Margin="2">
+                        <Rectangle Fill="Gray" Width="32" Height="32" DockPanel.Dock="Left"/>
+                        <TextBlock Text="{Binding Value}" VerticalAlignment="Center"/>
+                    </DockPanel>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+        
     </Grid>
 </Window>
