@@ -1,6 +1,7 @@
 ﻿using Logix;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Windows.Input;
@@ -12,14 +13,18 @@ namespace PlcTagMonitor.UI
         private string _plcIP;
         private List<TagTemplate> _tags;
         private string _notification;
-        private BindingList<VmMonitoredTag> _monitoredTags;
+        private ObservableCollection<VmMonitoredTag> _monitoredTags;
         private bool _connected;
 
         public ICommand CmdLoadTags { get; internal set; }
         public ICommand CmdStartMonitoring { get; internal set; }
         public ICommand CmdStopMonitoring { get; internal set; }
+        public VmTagView()
+        {
+            _monitoredTags = new ObservableCollection<VmMonitoredTag>();
+        }
 
-        public BindingList<VmMonitoredTag> MonitoredTags
+        public ObservableCollection<VmMonitoredTag> MonitoredTags
         {
             get
             {
