@@ -63,9 +63,9 @@ namespace PlcTagMonitor.UI
                 {
                     Timeout = TIMEOUT
                 };
-                if (plc.Connect() != ResultCode.E_SUCCESS)
+                if (plc.Connect() != ResultCode.E_SUCCESS || plc.UploadTags() != ResultCode.E_SUCCESS)
                 {
-                    State.Notification = plc.ErrorString;
+                    throw new Exception(plc.ErrorString);
                 }
                 this.tagGroup = new TagGroup(plc);
                 State.Tags = LoadAllScalar();
@@ -76,25 +76,17 @@ namespace PlcTagMonitor.UI
                 State.Notification = e.Message;
             }
         }
-        
+
         public List<TagTemplate> LoadAllScalar()
         {
-            if (plc.UploadTags() != ResultCode.E_SUCCESS)
-            {
-                State.Notification = plc.ErrorString;
-            }
             var grpName = "SimulationTests";
             var program = plc.ProgramList.Where((p) => p.Name == grpName).FirstOrDefault();
-            if(program != null)
+            if (program != null)
             {
                 return program.TagItems().ToList();
             }
-            else
-            {
-                State.Notification = $"Cannot find group {grpName}";
-            }
-
-            return plc.ProgramList.SelectMany((p) => p.TagItems()).Where((t)=> t.IsAtomic).ToList();
+            State.Notification = $"Cannot find group {grpName}";
+            return plc.ProgramList.SelectMany((p) => p.TagItems()).Where((t) => t.IsAtomic).ToList();
         }
 
         public void AddMonitorTag(string tagName)
