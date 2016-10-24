@@ -5,6 +5,8 @@ using System.ComponentModel;
 using System.Net;
 using System.Windows.Input;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Windows;
 
 namespace PlcTagMonitor.UI
 {
@@ -49,7 +51,6 @@ namespace PlcTagMonitor.UI
                 CmdLoadTags = new DelegateCommand(() => LoadTags()),
                 CmdStartMonitoring = new DelegateCommand(() => tagGroup.ScanStart(SCAN_INTERVAL)),
                 CmdStopMonitoring = new DelegateCommand(() => tagGroup.ScanStop()),
-                MonitoredTags = new BindingList<VmMonitoredTag>(),
             };
         }
 
@@ -107,20 +108,24 @@ namespace PlcTagMonitor.UI
 
         private void OnTagChanged(EventArgs eargs, VmMonitoredTag vmTag)
         {
-            var args = (DataChangeEventArgs)eargs;
-            try
+            Application.Current?.Dispatcher?.Invoke(() =>
             {
-                if (ResultCode.QUAL_GOOD == args.QualityCode)
+                var args = (DataChangeEventArgs)eargs;
+                try
                 {
-                    vmTag.Value = float.Parse(args.Value.ToString());
-                    vmTag.TimeStamp = args.TimeStamp;
+                    if (ResultCode.QUAL_GOOD == args.QualityCode)
+                    {
+                        vmTag.AddValue(double.Parse(args.Value.ToString()));
+                        //vmTag.Value = float.Parse(args.Value.ToString());
+                        //vmTag.TimeStamp = args.TimeStamp;
+                    }
+                    vmTag.Quality = args.QualityString;
                 }
-                vmTag.Quality = args.QualityString;
-            }
-            catch (Exception e)
-            {
-                State.Notification = e.Message;
-            }
+                catch (Exception e)
+                {
+                    State.Notification = e.Message;
+                }
+            });
         }
 
         public void RemoveMonitorTag(string tagName)

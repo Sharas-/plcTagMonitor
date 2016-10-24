@@ -3,6 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:sch="http://sparrowtoolkit.codeplex.com/wpf"
         xmlns:local="clr-namespace:PlcTagMonitor"
         mc:Ignorable="d"
         Title="PLC Tag Monitor" Height="724.689" Width="1112.841">
@@ -29,13 +30,17 @@
         <ListBox x:Name="listBox" HorizontalAlignment="Left" Height="611" Margin="370,60,0,0" VerticalAlignment="Top" Width="723" ItemsSource="{Binding MonitoredTags}">
             <ListBox.ItemTemplate>
                 <DataTemplate>
-                    <DockPanel Margin="2">
-                        <Rectangle Fill="Gray" Width="32" Height="32" DockPanel.Dock="Left"/>
-                        <TextBlock Text="{Binding Value}" VerticalAlignment="Center"/>
-                    </DockPanel>
+                    <sch:SparrowChart Height="200" Width="800">
+                        <sch:SparrowChart.XAxis>
+                            <sch:LinearXAxis/>
+                        </sch:SparrowChart.XAxis>
+                        <sch:SparrowChart.YAxis>
+                            <sch:LinearYAxis/>
+                        </sch:SparrowChart.YAxis>
+                        <sch:LineSeries PointsSource="{Binding Values}" XPath="X" YPath="Y"/>
+                    </sch:SparrowChart>
                 </DataTemplate>
             </ListBox.ItemTemplate>
         </ListBox>
-        
     </Grid>
 </Window>

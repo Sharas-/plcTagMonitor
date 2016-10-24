@@ -1,57 +1,72 @@
 ﻿using Logix;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace PlcTagMonitor.UI
 {
-    public class VmMonitoredTag: INotifyPropertyChanged 
+    public class VmMonitoredTag : INotifyPropertyChanged
     {
-        private float _value;
+        private ObservableCollection<Point> _values;
         private string _name;
-        private DateTime _tstamp;
+        private uint X;
+        //private DateTime _tstamp;
         internal Tag TheTag { get; }
 
         public VmMonitoredTag(Tag t)
         {
             TheTag = t;
             Name = t.Name;
+            _values = new ObservableCollection<Point>();
         }
 
-        public DateTime TimeStamp
+        //public DateTime TimeStamp
+        //{
+        //    get
+        //    {
+        //        return _tstamp;
+        //    }
+        //    set
+        //    {
+        //        if (value != this._tstamp)
+        //        {
+        //            this._tstamp = value;
+        //            NotifyPropertyChanged();
+        //        }
+        //    }
+        //}
+
+        public ObservableCollection<Point> Values
         {
             get
             {
-                return _tstamp;
+                return _values;
             }
             set
             {
-                if (value != this._tstamp)
+                if (value != this._values)
                 {
-                    this._tstamp = value;
+                    this._values = value;
                     NotifyPropertyChanged();
                 }
             }
         }
 
-        public float Value
+        public void AddValue(double value)
         {
-            get
+            uint MaxX = 50;
+            this.X %= MaxX;
+            if (Values.Count >= MaxX)
             {
-                return _value;
+                Values.Clear();
             }
-            set
-            {
-                if (value != this._value)
-                {
-                    this._value = value;
-                    NotifyPropertyChanged();
-                }
-            }
+            Values.Add(new Point(this.X += 1, value));
         }
 
         public string Name
